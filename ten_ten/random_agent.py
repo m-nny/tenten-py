@@ -8,6 +8,7 @@ class RandomAgent:
         pass
 
     def decide(self, state, moves) -> ((int, int), int, int):
-        x, y = np.random.choice(np.arange(BOARD_SIZE), size=2)
         move = choice(moves)
+        x = choice(np.arange(BOARD_SIZE - move[0] + 1))
+        y = choice(np.arange(BOARD_SIZE - move[1] + 1))
         return (move, x, y)

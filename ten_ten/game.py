@@ -39,6 +39,24 @@ class Game:
         self.board[y:y+h, x:x+w] = True
         return True
 
+    def update(self):
+        rows = list(filter(lambda i: np.all(self.board[i, :]), range(BOARD_SIZE)))
+        cols = list(filter(lambda j: np.all(self.board[:, j]), range(BOARD_SIZE)))
+
+        reward = (len(rows) + len(cols)) * BOARD_SIZE
+
+        if reward > 0:
+            print(board_to_str(self.board))
+            print("*" * 10, reward)
+
+        for i in rows: 
+            self.board[i, :] = False
+        for j in cols:
+            self.board[:, j] = False
+
+        return reward
+    
+
     def over(self, moves):
         for shape in moves:
             for i in range(BOARD_SIZE):

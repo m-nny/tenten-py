@@ -39,11 +39,10 @@ def multirun(agent: RandomAgent, max_moves, repeats):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--verbose', default=5, type=int)
-    parser.add_argument('--max-moves', default=40, type=int)
-    parser.add_argument('-n', default=100, type=int)
+    parser.add_argument('--max-moves', default=50, type=int)
+    parser.add_argument('-n', default=1000, type=int)
     args = parser.parse_args()
     VERBOSE = args.verbose
-    
 
     agent = RandomAgent()
     multirun(agent, max_moves=args.max_moves, repeats=args.n)

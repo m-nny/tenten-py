@@ -18,6 +18,7 @@ class Environment:
         success = self.game.make_move(shape, x, y)
         reward = -1
         if success:
+            self.game.update()
             reward = shape[0] * shape[1]
             self.shapes.remove(shape)
             if len(self.shapes) == 0:
