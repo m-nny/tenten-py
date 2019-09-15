@@ -45,10 +45,6 @@ class Game:
 
         reward = (len(rows) + len(cols)) * BOARD_SIZE
 
-        if reward > 0:
-            print(board_to_str(self.board))
-            print("*" * 10, reward)
-
         for i in rows: 
             self.board[i, :] = False
         for j in cols:

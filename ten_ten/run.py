@@ -1,6 +1,8 @@
 from .game import board_to_str
-from ten_ten.env import Environment
-from ten_ten.random_agent import RandomAgent
+from .env import Environment
+from .agents.random import RandomAgent
+from .agents.greedy import GreedyAgent
+from .agents import Agent
 
 from argparse import ArgumentParser
 
@@ -12,7 +14,7 @@ def __log(*kargs, level=20, **kwargs):
     if level <= VERBOSE:
         print(*kargs, **kwargs)
 
-def play(agent: RandomAgent, max_moves):
+def play(agent: Agent, max_moves):
     env = Environment()
     score = 0
     state, moves = env.get_state()
@@ -27,12 +29,12 @@ def play(agent: RandomAgent, max_moves):
         if moves is None:
             break
     __log('-' * 20)
-    __log('Score:', score, level=10)
+    __log('[{}] Score:{}'.format(agent.__class__.__name__, score), level=10)
     return score
 
-def multirun(agent: RandomAgent, max_moves, repeats):
+def multirun(agent: Agent, max_moves, repeats):
     scores = np.array([play(agent, max_moves) for _ in range(repeats)])
-    __log("Score: {} ± {:.2f}".format(np.mean(scores), np.std(scores)), level=5)
+    __log("[{}] Score: {} ± {:.2f}".format(agent.__class__.__name__, np.mean(scores), np.std(scores)), level=5)
     return scores
 
 
@@ -40,11 +42,9 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--verbose', default=5, type=int)
     parser.add_argument('--max-moves', default=50, type=int)
-    parser.add_argument('-n', default=1000, type=int)
+    parser.add_argument('-n', default=200, type=int)
     args = parser.parse_args()
     VERBOSE = args.verbose
 
-    agent = RandomAgent()
-    multirun(agent, max_moves=args.max_moves, repeats=args.n)
-
-
+    for agent in [RandomAgent(), GreedyAgent()]:
+        multirun(agent, max_moves=args.max_moves, repeats=args.n)
